@@ -139,7 +139,7 @@ func (t Tile) NextDora() Tile {
 			return NewTile(Ji, nextRank)
 		}
 		// 5z→6z→7z→5z (White→Green→Red→White)
-		nextRank := ((t.Rank - 5) % 3) + 5
+		nextRank := ((t.Rank - 5 + 1) % 3) + 5
 		return NewTile(Ji, nextRank)
 	}
 
