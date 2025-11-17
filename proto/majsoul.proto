@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package mahjong;
+
+option go_package = "github.com/guny524/majhong_cli/pkg/proto";
+
+// Majsoul paipu format representation
+message MajsoulPaipu {
+  string version = 1;
+  PaipuMetadata metadata = 2;
+  repeated PaipuRound rounds = 3;
+  repeated int32 final_scores = 4;
+  string wall_hash = 5;
+  string salt_hash = 6;
+}
+
+message PaipuMetadata {
+  repeated string player_names = 1;
+  string room_type = 2;  // Copper/Silver/Gold/Throne
+  int64 timestamp = 3;
+  string game_id = 4;
+}
+
+message PaipuRound {
+  int32 round_number = 1;
+  repeated PaipuEvent events = 2;
+  RoundResult result = 3;
+}
+
+message PaipuEvent {
+  int64 timestamp = 1;
+  int32 player_seat = 2;
+  EventType type = 3;
+  repeated string tiles = 4;  // Majsoul tile notation (0m, 5mr, etc.)
+}
+
+enum EventType {
+  EVENT_DRAW = 0;
+  EVENT_DISCARD = 1;
+  EVENT_PON = 2;
+  EVENT_CHI = 3;
+  EVENT_KAN = 4;
+  EVENT_RIICHI = 5;
+  EVENT_TSUMO = 6;
+  EVENT_RON = 7;
+  EVENT_RYUUKYOKU = 8;
+}
+
+message RoundResult {
+  ResultType type = 1;
+  repeated int32 score_deltas = 2;
+  int32 winner_seat = 3;
+  repeated string yaku = 4;
+  int32 han = 5;
+  int32 fu = 6;
+}
+
+enum ResultType {
+  TSUMO_WIN = 0;
+  RON_WIN = 1;
+  DRAW = 2;
+}

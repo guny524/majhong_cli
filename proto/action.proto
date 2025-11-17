@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package mahjong;
+
+option go_package = "github.com/guny524/majhong_cli/pkg/proto";
+
+import "game_state.proto";
+
+// ActionRequest for fast agent mode
+message ActionRequest {
+  oneof request {
+    InitGameRequest init = 1;
+    ApplyActionRequest apply = 2;
+    QueryStateRequest query = 3;
+  }
+}
+
+message InitGameRequest {
+  int64 seed = 1;
+  RuleConfig config = 2;
+}
+
+message ApplyActionRequest {
+  GameState current_state = 1;  // Embedded or reference
+  Action action = 2;
+}
+
+message QueryStateRequest {
+  string query_field = 1;  // "valid-actions", "scores", etc.
+}
+
+// ActionResponse from engine
+message ActionResponse {
+  bool success = 1;
+  string error_message = 2;
+  oneof response {
+    GameState new_state = 3;
+    QueryResult query_result = 4;
+  }
+}
+
+message QueryResult {
+  repeated Action valid_actions = 1;
+  repeated int32 scores = 2;
+  string round_info = 3;
+  int32 wall_remaining = 4;
+}

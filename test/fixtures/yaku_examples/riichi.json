@@ -1,0 +1,24 @@
+{
+  "yaku": "RIICHI",
+  "han": 1,
+  "description": "Riichi - declared when tenpai with closed hand",
+  "examples": [
+    {
+      "hand": ["1m", "1m", "2m", "3m", "4m", "5m", "6m", "7m", "8m", "8m", "8m", "9m", "9m"],
+      "winTile": "9m",
+      "isClosed": true,
+      "isRiichi": true,
+      "expectedYaku": ["RIICHI"],
+      "note": "Basic riichi with simple wait"
+    },
+    {
+      "hand": ["2m", "3m", "4m", "5p", "6p", "7p", "1s", "2s", "3s", "4s", "5s", "6s", "8m"],
+      "winTile": "8m",
+      "isClosed": true,
+      "isRiichi": true,
+      "isIppatsu": true,
+      "expectedYaku": ["RIICHI", "IPPATSU"],
+      "note": "Riichi with ippatsu (win within one turn cycle)"
+    }
+  ]
+}

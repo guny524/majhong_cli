@@ -1,0 +1,21 @@
+{
+  "yaku": "TANYAO",
+  "han": 1,
+  "description": "Tanyao - all simples (2-8), no terminals or honors",
+  "examples": [
+    {
+      "hand": ["2m", "3m", "4m", "5p", "5p", "5p", "6s", "7s", "8s", "3m", "3m", "3m", "6p"],
+      "winTile": "6p",
+      "isClosed": false,
+      "expectedYaku": ["TANYAO"],
+      "note": "Open tanyao with triplets"
+    },
+    {
+      "hand": ["2m", "3m", "4m", "5p", "6p", "7p", "2s", "3s", "4s", "5s", "6s", "7s", "8m"],
+      "winTile": "8m",
+      "isClosed": true,
+      "expectedYaku": ["TANYAO", "PINFU"],
+      "note": "Closed tanyao with pinfu"
+    }
+  ]
+}
