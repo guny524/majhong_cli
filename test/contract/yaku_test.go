@@ -35,8 +35,8 @@ func TestYakuDetection(t *testing.T) {
 			isClosed:     true,
 			isRiichi:     true,
 			isTsumo:      false,
-			expectedYaku: []string{"RIICHI"},
-			expectedHan:  1,
+			expectedYaku: []string{"RIICHI", "CHINITSU"},
+			expectedHan:  7, // 1 (riichi) + 6 (chinitsu closed)
 		},
 		{
 			name:         "Menzen Tsumo",
@@ -85,8 +85,8 @@ func TestYakuDetection(t *testing.T) {
 			handTiles:    []string{"2m", "3m", "4m", "2m", "3m", "4m", "5p", "6p", "7p", "8s", "9s", "7s", "1z"},
 			winTile:      "1z",
 			isClosed:     true,
-			expectedYaku: []string{"IIPEIKOU"},
-			expectedHan:  1,
+			expectedYaku: []string{"PINFU", "IIPEIKOU"},
+			expectedHan:  2, // 1 (pinfu) + 1 (iipeikou)
 		},
 
 		// 2-Han Yaku
@@ -120,8 +120,8 @@ func TestYakuDetection(t *testing.T) {
 			handTiles:    []string{"3m", "4m", "5m", "3p", "4p", "5p", "3s", "4s", "5s", "1z", "1z", "6m", "7m"},
 			winTile:      "8m",
 			isClosed:     true,
-			expectedYaku: []string{"SANSHOKU_DOUJUN"},
-			expectedHan:  2,
+			expectedYaku: []string{"PINFU", "SANSHOKU_DOUJUN"},
+			expectedHan:  3, // 1 (pinfu) + 2 (sanshoku closed)
 		},
 		{
 			name:         "Sanshoku Doujun - Open",
@@ -136,8 +136,8 @@ func TestYakuDetection(t *testing.T) {
 			handTiles:    []string{"1m", "2m", "3m", "4m", "5m", "6m", "7m", "8m", "9m", "5p", "5p", "6s", "7s"},
 			winTile:      "8s",
 			isClosed:     true,
-			expectedYaku: []string{"ITTSU"},
-			expectedHan:  2,
+			expectedYaku: []string{"PINFU", "ITTSU"},
+			expectedHan:  3, // 1 (pinfu) + 2 (ittsu closed)
 		},
 		{
 			name:         "Chanta - Closed",
@@ -151,8 +151,8 @@ func TestYakuDetection(t *testing.T) {
 			name:         "Honroutou",
 			handTiles:    []string{"1m", "1m", "9m", "9m", "9m", "1p", "1p", "1p", "5z", "5z", "5z", "9p", "9p"},
 			winTile:      "9p",
-			expectedYaku: []string{"HONROUTOU"},
-			expectedHan:  2,
+			expectedYaku: []string{"YAKUHAI_HAKU", "TOITOI", "SANANKOU", "CHANTA", "HONROUTOU"},
+			expectedHan:  8, // 1 (yakuhai) + 2 (toitoi) + 2 (sanankou) + 1 (chanta open, assuming open) + 2 (honroutou)
 		},
 		{
 			name:         "Shousangen",
@@ -168,8 +168,8 @@ func TestYakuDetection(t *testing.T) {
 			isClosed:     true,
 			isRiichi:     true,
 			firstTurn:    true,
-			expectedYaku: []string{"DOUBLE_RIICHI"},
-			expectedHan:  2,
+			expectedYaku: []string{"DOUBLE_RIICHI", "CHINITSU"},
+			expectedHan:  8, // 2 (double riichi) + 6 (chinitsu closed)
 		},
 
 		// 3-Han Yaku
@@ -178,8 +178,8 @@ func TestYakuDetection(t *testing.T) {
 			handTiles:    []string{"2m", "3m", "4m", "2m", "3m", "4m", "5p", "6p", "7p", "5p", "6p", "7p", "8s"},
 			winTile:      "8s",
 			isClosed:     true,
-			expectedYaku: []string{"RYANPEIKOU"},
-			expectedHan:  3,
+			expectedYaku: []string{"PINFU", "TANYAO", "RYANPEIKOU"},
+			expectedHan:  5, // 1 (pinfu) + 1 (tanyao) + 3 (ryanpeikou)
 		},
 		{
 			name:         "Junchan - Closed",
@@ -204,16 +204,16 @@ func TestYakuDetection(t *testing.T) {
 			handTiles:    []string{"1m", "2m", "3m", "4m", "5m", "6m", "7m", "8m", "9m", "2m", "2m", "5m", "5m"},
 			winTile:      "5m",
 			isClosed:     true,
-			expectedYaku: []string{"CHINITSU"},
-			expectedHan:  6,
+			expectedYaku: []string{"ITTSU", "CHINITSU"},
+			expectedHan:  8, // 2 (ittsu closed) + 6 (chinitsu closed)
 		},
 		{
 			name:         "Chinitsu - Open",
 			handTiles:    []string{"1m", "2m", "3m", "4m", "5m", "6m", "7m", "8m", "9m", "2m", "2m", "5m", "5m"},
 			winTile:      "5m",
 			isClosed:     false,
-			expectedYaku: []string{"CHINITSU"},
-			expectedHan:  5,
+			expectedYaku: []string{"ITTSU", "CHINITSU"},
+			expectedHan:  6, // 1 (ittsu open) + 5 (chinitsu open)
 		},
 
 		// Yakuman

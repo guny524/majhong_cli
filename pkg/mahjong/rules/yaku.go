@@ -350,18 +350,19 @@ func analyzeHand(tiles []engine.Tile, winTile engine.Tile, melds []engine.Meld) 
 		return analysis
 	}
 
-	if isChiitoitsuPattern(tiles) {
-		analysis.IsChiitoitsu = true
-		return analysis
-	}
-
-	// Try to find standard 4 groups + 1 pair pattern
+	// Try to find standard 4 groups + 1 pair pattern first
 	sortedTiles := make([]engine.Tile, len(tiles))
 	copy(sortedTiles, tiles)
 	sortTiles(sortedTiles)
 
 	// Find all possible meld decompositions
 	analysis.Melds = findMelds(sortedTiles)
+
+	// Only treat as chiitoitsu if standard decomposition failed
+	if len(analysis.Melds) == 0 && isChiitoitsuPattern(tiles) {
+		analysis.IsChiitoitsu = true
+		return analysis
+	}
 
 	return analysis
 }
