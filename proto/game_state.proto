@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package mahjong;
+
+option go_package = "github.com/guny524/majhong_cli/pkg/proto";
+
+// GameState represents complete game state
+message GameState {
+  string version = 1;
+  int64 seed = 2;
+  Round round = 3;
+  repeated Player players = 4;
+  Wall wall = 5;
+  repeated Action history = 6;
+  RuleConfig config = 7;
+}
+
+message Round {
+  Seat dealer = 1;
+  Wind round_wind = 2;  // East/South/West/North
+  int32 honba = 3;
+  int32 riichi_sticks = 4;
+  repeated Tile dora_indicators = 5;
+  repeated Tile uradora_indicators = 6;
+}
+
+message Player {
+  Seat seat = 1;
+  repeated Tile hand = 2;
+  repeated Tile discards = 3;
+  repeated Meld melds = 4;
+  int32 score = 5;
+  bool riichi = 6;
+  FuritenState furiten = 7;
+  bool tenpai = 8;
+}
+
+message Wall {
+  int32 remaining = 1;
+  int64 seed = 2;
+  string hash = 3;       // SHA-256(wall + salt)
+  string salt_hash = 4;  // SHA-256(salt)
+}
+
+message Tile {
+  Suit suit = 1;
+  int32 rank = 2;  // 1-9 for suited, 1-7 for honors
+  bool is_aka_dora = 3;
+}
+
+message Action {
+  int32 turn = 1;
+  Seat player = 2;
+  ActionType type = 3;
+  repeated Tile tiles = 4;
+  int64 timestamp = 5;
+}
+
+enum Seat {
+  EAST = 0;
+  SOUTH = 1;
+  WEST = 2;
+  NORTH = 3;
+}
+
+enum Wind {
+  WIND_EAST = 0;
+  WIND_SOUTH = 1;
+  WIND_WEST = 2;
+  WIND_NORTH = 3;
+}
+
+enum Suit {
+  MAN = 0;    // 萬子 (characters)
+  PIN = 1;    // 筒子 (dots)
+  SOU = 2;    // 索子 (bamboo)
+  JI = 3;     // 字牌 (honors)
+}
+
+enum ActionType {
+  DRAW = 0;
+  DISCARD = 1;
+  PON = 2;
+  CHI = 3;
+  KAN = 4;
+  RIICHI = 5;
+  TSUMO = 6;
+  RON = 7;
+}
+
+message FuritenState {
+  bool discard_furiten = 1;
+  bool temporary_furiten = 2;
+  bool riichi_furiten = 3;
+}
+
+message Meld {
+  MeldType type = 1;
+  repeated Tile tiles = 2;
+  Seat from_player = 3;
+}
+
+enum MeldType {
+  PON_MELD = 0;
+  CHI_MELD = 1;
+  ANKAN = 2;
+  MINKAN = 3;
+  KAKAN = 4;
+}
+
+message RuleConfig {
+  bool riichi_mahjong = 1;
+  int32 starting_points = 2;  // 25000 or 30000
+  int32 return_points = 3;    // 30000 typically
+  int32 aka_dora_count = 4;   // 0-4
+  repeated string local_yaku = 5;  // e.g., ["renhou", "nagashimangan"]
+}
