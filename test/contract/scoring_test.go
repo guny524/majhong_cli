@@ -2,6 +2,8 @@ package contract
 
 import (
 	"testing"
+
+	"github.com/guny524/majhong_cli/pkg/mahjong/rules"
 )
 
 // Contract tests for scoring calculation
@@ -301,20 +303,23 @@ func TestScoringCalculation(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			t.Skip("NOT IMPLEMENTED - TDD Red Phase: Implement pkg/mahjong/rules/scoring.go")
+			score := rules.CalculateScore(tt.han, tt.fu, tt.isDealer, tt.isTsumo)
 
-			// TODO: Implement scoring calculation
-			// score := CalculateScore(tt.han, tt.fu, tt.isDealer, tt.isTsumo)
-			//
-			// if tt.isTsumo {
-			//     if !reflect.DeepEqual(score.TsumoPayment, tt.expectedTsumo) {
-			//         t.Errorf("Expected tsumo %v, got %v", tt.expectedTsumo, score.TsumoPayment)
-			//     }
-			// } else {
-			//     if score.RonPayment != tt.expectedRon {
-			//         t.Errorf("Expected ron %d, got %d", tt.expectedRon, score.RonPayment)
-			//     }
-			// }
+			if tt.isTsumo {
+				if len(score.TsumoPayment) != len(tt.expectedTsumo) {
+					t.Errorf("Expected tsumo payment length %d, got %d", len(tt.expectedTsumo), len(score.TsumoPayment))
+					return
+				}
+				for i, expected := range tt.expectedTsumo {
+					if score.TsumoPayment[i] != expected {
+						t.Errorf("Tsumo payment[%d]: expected %d, got %d", i, expected, score.TsumoPayment[i])
+					}
+				}
+			} else {
+				if score.RonPayment != tt.expectedRon {
+					t.Errorf("Expected ron %d, got %d", tt.expectedRon, score.RonPayment)
+				}
+			}
 		})
 	}
 }
