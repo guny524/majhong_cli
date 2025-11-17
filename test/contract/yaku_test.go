@@ -2,6 +2,9 @@ package contract
 
 import (
 	"testing"
+
+	"github.com/guny524/majhong_cli/pkg/mahjong/engine"
+	"github.com/guny524/majhong_cli/pkg/mahjong/rules"
 )
 
 // Contract tests for all 52 yaku patterns
@@ -20,6 +23,7 @@ func TestYakuDetection(t *testing.T) {
 		isDealer    bool
 		seatWind    string
 		roundWind   string
+		firstTurn   bool
 		expectedYaku []string
 		expectedHan  int
 	}{
@@ -163,6 +167,7 @@ func TestYakuDetection(t *testing.T) {
 			winTile:      "9m",
 			isClosed:     true,
 			isRiichi:     true,
+			firstTurn:    true,
 			expectedYaku: []string{"DOUBLE_RIICHI"},
 			expectedHan:  2,
 		},
@@ -292,6 +297,8 @@ func TestYakuDetection(t *testing.T) {
 			winTile:      "3m",
 			isClosed:     true,
 			isDealer:     true,
+			isTsumo:      true,
+			firstTurn:    true,
 			expectedYaku: []string{"TENHOU"},
 			expectedHan:  13,
 		},
@@ -302,6 +309,7 @@ func TestYakuDetection(t *testing.T) {
 			isClosed:     true,
 			isDealer:     false,
 			isTsumo:      true,
+			firstTurn:    true,
 			expectedYaku: []string{"CHIIHOU"},
 			expectedHan:  13,
 		},
@@ -309,32 +317,44 @@ func TestYakuDetection(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// TODO: Implement yaku detection
-			// This test MUST FAIL until implementation is complete
-			t.Skip("NOT IMPLEMENTED - TDD Red Phase: Implement pkg/mahjong/rules/yaku.go")
+			// Parse tiles
+			hand, err := engine.ParseTiles(tt.handTiles)
+			if err != nil {
+				t.Fatalf("Failed to parse hand tiles: %v", err)
+			}
 
-			// Example of what the implementation should look like:
-			// hand := parseHand(tt.handTiles)
-			// winTile := parseTile(tt.winTile)
-			// context := WinContext{
-			//     IsClosed: tt.isClosed,
-			//     IsRiichi: tt.isRiichi,
-			//     IsTsumo:  tt.isTsumo,
-			//     IsDealer: tt.isDealer,
-			//     SeatWind: tt.seatWind,
-			//     RoundWind: tt.roundWind,
-			// }
-			//
-			// yaku := DetectYaku(hand, winTile, context)
-			//
-			// if !containsAllYaku(yaku, tt.expectedYaku) {
-			//     t.Errorf("Expected yaku %v, got %v", tt.expectedYaku, yaku)
-			// }
-			//
-			// totalHan := calculateHan(yaku)
-			// if totalHan != tt.expectedHan {
-			//     t.Errorf("Expected %d han, got %d han", tt.expectedHan, totalHan)
-			// }
+			winTile, err := engine.ParseTile(tt.winTile)
+			if err != nil {
+				t.Fatalf("Failed to parse win tile: %v", err)
+			}
+
+			// Create win context
+			seatWind := parseWind(tt.seatWind)
+			roundWind := parseRoundWind(tt.roundWind)
+
+			context := rules.WinContext{
+				IsClosed:  tt.isClosed,
+				IsRiichi:  tt.isRiichi,
+				IsTsumo:   tt.isTsumo,
+				IsDealer:  tt.isDealer,
+				SeatWind:  seatWind,
+				RoundWind: roundWind,
+				FirstTurn: tt.firstTurn,
+			}
+
+			// Detect yaku
+			yaku := rules.DetectYaku(hand, winTile, context)
+
+			// Verify yaku
+			if !containsAllYaku(yaku, tt.expectedYaku) {
+				t.Errorf("Expected yaku %v, got %v", tt.expectedYaku, yakuToStrings(yaku))
+			}
+
+			// Verify total han
+			totalHan := calculateTotalHan(yaku)
+			if totalHan != tt.expectedHan {
+				t.Errorf("Expected %d han, got %d han (yaku: %v)", tt.expectedHan, totalHan, yakuToStrings(yaku))
+			}
 		})
 	}
 }
@@ -397,4 +417,67 @@ func TestYakuPriority(t *testing.T) {
 		//     t.Errorf("Expected KOKUSHI, got %v", yaku[0])
 		// }
 	})
+}
+
+// Helper functions
+
+func parseWind(wind string) engine.Seat {
+	switch wind {
+	case "East":
+		return engine.SeatEast
+	case "South":
+		return engine.SeatSouth
+	case "West":
+		return engine.SeatWest
+	case "North":
+		return engine.SeatNorth
+	default:
+		return engine.SeatEast
+	}
+}
+
+func parseRoundWind(wind string) engine.Wind {
+	switch wind {
+	case "East":
+		return engine.WindEast
+	case "South":
+		return engine.WindSouth
+	case "West":
+		return engine.WindWest
+	case "North":
+		return engine.WindNorth
+	default:
+		return engine.WindEast
+	}
+}
+
+func yakuToStrings(yaku []rules.Yaku) []string {
+	result := make([]string, len(yaku))
+	for i, y := range yaku {
+		result[i] = string(y.Type)
+	}
+	return result
+}
+
+func containsAllYaku(detected []rules.Yaku, expected []string) bool {
+	detectedMap := make(map[string]bool)
+	for _, y := range detected {
+		detectedMap[string(y.Type)] = true
+	}
+
+	for _, exp := range expected {
+		if !detectedMap[exp] {
+			return false
+		}
+	}
+
+	return true
+}
+
+func calculateTotalHan(yaku []rules.Yaku) int {
+	total := 0
+	for _, y := range yaku {
+		total += y.Han
+	}
+	return total
 }
