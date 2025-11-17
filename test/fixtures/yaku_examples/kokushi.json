@@ -1,0 +1,25 @@
+{
+  "yaku": "KOKUSHI",
+  "han": 13,
+  "yakuman": true,
+  "description": "Kokushi Musou - Thirteen Orphans (all terminals and honors)",
+  "examples": [
+    {
+      "hand": ["1m", "9m", "1p", "9p", "1s", "9s", "1z", "2z", "3z", "4z", "5z", "6z", "7z"],
+      "winTile": "7z",
+      "isClosed": true,
+      "expectedYaku": ["KOKUSHI"],
+      "expectedHan": 13,
+      "note": "Basic kokushi with single pair wait"
+    },
+    {
+      "hand": ["1m", "9m", "1p", "9p", "1s", "9s", "1z", "2z", "3z", "4z", "5z", "6z", "6z"],
+      "winTile": "7z",
+      "isClosed": true,
+      "expectedYaku": ["KOKUSHI"],
+      "expectedHan": 13,
+      "wait": "13-sided",
+      "note": "Kokushi with 13-way wait (some rules give double yakuman)"
+    }
+  ]
+}

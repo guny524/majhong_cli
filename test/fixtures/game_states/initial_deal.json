@@ -1,0 +1,93 @@
+{
+  "version": "1.0.0",
+  "seed": 1234567890,
+  "round": {
+    "dealer": "East",
+    "roundWind": "East",
+    "roundNumber": 1,
+    "honba": 0,
+    "riichiSticks": 0,
+    "doraIndicators": ["5p"],
+    "uraDoraIndicators": []
+  },
+  "players": [
+    {
+      "seat": "East",
+      "hand": ["1m", "2m", "3m", "7m", "7m", "1p", "2p", "3p", "5s", "6s", "7s", "1z", "1z", "9m"],
+      "discards": [],
+      "melds": [],
+      "score": 25000,
+      "riichi": false,
+      "furiten": {
+        "discardFuriten": false,
+        "temporaryFuriten": false,
+        "riichiFuriten": false
+      },
+      "tenpai": false
+    },
+    {
+      "seat": "South",
+      "hand": ["2m", "4m", "6m", "8m", "1p", "3p", "5p", "7p", "9p", "2s", "4s", "6s", "8s"],
+      "discards": [],
+      "melds": [],
+      "score": 25000,
+      "riichi": false,
+      "furiten": {
+        "discardFuriten": false,
+        "temporaryFuriten": false,
+        "riichiFuriten": false
+      },
+      "tenpai": false
+    },
+    {
+      "seat": "West",
+      "hand": ["3m", "3m", "5m", "5m", "7m", "7m", "9m", "9m", "2p", "4p", "6p", "1z", "2z"],
+      "discards": [],
+      "melds": [],
+      "score": 25000,
+      "riichi": false,
+      "furiten": {
+        "discardFuriten": false,
+        "temporaryFuriten": false,
+        "riichiFuriten": false
+      },
+      "tenpai": false
+    },
+    {
+      "seat": "North",
+      "hand": ["1s", "1s", "3s", "5s", "5s", "7s", "9s", "9s", "3z", "3z", "4z", "4z", "5z"],
+      "discards": [],
+      "melds": [],
+      "score": 25000,
+      "riichi": false,
+      "furiten": {
+        "discardFuriten": false,
+        "temporaryFuriten": false,
+        "riichiFuriten": false
+      },
+      "tenpai": false
+    }
+  ],
+  "wall": {
+    "remaining": 68,
+    "seed": 1234567890,
+    "hash": "a3f2e1d4c5b6a7e8f9d0c1b2a3e4f5d6c7b8a9e0f1d2c3b4a5e6f7d8c9b0a1e2",
+    "saltHash": "b4e1f2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1"
+  },
+  "history": [
+    {
+      "turn": 1,
+      "player": "East",
+      "action": "draw",
+      "tiles": ["9m"],
+      "timestamp": "2025-11-17T10:00:00Z"
+    }
+  ],
+  "config": {
+    "riichiMahjong": true,
+    "startingPoints": 25000,
+    "returnPoints": 30000,
+    "akaDora": 3,
+    "localYaku": []
+  }
+}

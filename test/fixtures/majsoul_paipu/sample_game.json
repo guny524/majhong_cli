@@ -1,0 +1,63 @@
+{
+  "version": "2.4.0",
+  "metadata": {
+    "gameId": "240115-12345678-abcd-ef01",
+    "timestamp": 1705305600,
+    "roomType": "Gold Room",
+    "players": [
+      "PlayerEast",
+      "PlayerSouth",
+      "PlayerWest",
+      "PlayerNorth"
+    ]
+  },
+  "wallHash": "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+  "saltHash": "d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6",
+  "seed": 9876543210,
+  "rounds": [
+    {
+      "roundNumber": 1,
+      "roundWind": "East",
+      "dealer": 0,
+      "events": [
+        {
+          "timestamp": 1705305610,
+          "playerSeat": 0,
+          "type": "EVENT_DRAW",
+          "tiles": ["9m"]
+        },
+        {
+          "timestamp": 1705305612,
+          "playerSeat": 0,
+          "type": "EVENT_DISCARD",
+          "tiles": ["9m"]
+        },
+        {
+          "timestamp": 1705305615,
+          "playerSeat": 1,
+          "type": "EVENT_DRAW",
+          "tiles": ["3p"]
+        },
+        {
+          "timestamp": 1705305617,
+          "playerSeat": 1,
+          "type": "EVENT_DISCARD",
+          "tiles": ["3p"]
+        }
+      ],
+      "result": {
+        "type": "RON_WIN",
+        "winnerSeat": 2,
+        "loserSeat": 1,
+        "yaku": ["RIICHI", "TANYAO", "PINFU"],
+        "han": 3,
+        "fu": 30,
+        "scoreDeltas": [0, -3900, 3900, 0],
+        "riichiSticks": 1,
+        "honba": 0
+      }
+    }
+  ],
+  "finalScores": [25000, 21100, 28900, 25000],
+  "note": "Sample Majsoul paipu file for testing import/export functionality"
+}
