@@ -2,6 +2,8 @@ package contract
 
 import (
 	"testing"
+
+	"github.com/guny524/majhong_cli/pkg/mahjong/rules"
 )
 
 // Contract tests for furiten detection
@@ -86,14 +88,11 @@ func TestDiscardFuriten(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			t.Skip("NOT IMPLEMENTED - TDD Red Phase: Implement pkg/mahjong/rules/furiten.go")
+			furiten := rules.CheckDiscardFuriten(tt.waitTiles, tt.discards)
 
-			// TODO: Implement discard furiten check
-			// furiten := CheckDiscardFuriten(tt.waitTiles, tt.discards)
-			//
-			// if furiten != tt.expectedFuriten {
-			//     t.Errorf("%s\nExpected furiten=%v, got %v", tt.description, tt.expectedFuriten, furiten)
-			// }
+			if furiten != tt.expectedFuriten {
+				t.Errorf("%s\nExpected furiten=%v, got %v", tt.description, tt.expectedFuriten, furiten)
+			}
 		})
 	}
 }
