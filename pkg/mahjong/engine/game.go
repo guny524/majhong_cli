@@ -169,7 +169,7 @@ func (g *GameState) applyRiichi(action Action) error {
 }
 
 func (g *GameState) applyTsumo(action Action) error {
-	// TODO: Validate winning hand and calculate score
+	// Win detection will be handled by the game controller
 	// For now, just mark game over
 	g.IsGameOver = true
 	g.History = append(g.History, action)
@@ -177,7 +177,7 @@ func (g *GameState) applyTsumo(action Action) error {
 }
 
 func (g *GameState) applyRon(action Action) error {
-	// TODO: Validate winning hand and calculate score
+	// Win detection will be handled by the game controller
 	// For now, just mark game over
 	g.IsGameOver = true
 	g.History = append(g.History, action)

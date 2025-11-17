@@ -241,3 +241,15 @@ func hashString(s string) string {
 func generateSalt(seed int64) string {
 	return fmt.Sprintf("majhong_salt_%d", seed)
 }
+
+// DoraIndicators returns all currently visible dora indicators
+func (w *Wall) DoraIndicators() []Tile {
+	return w.GetVisibleDoraIndicators()
+}
+
+// IsDoraForIndicator checks if a tile is dora for given indicator
+func (w *Wall) IsDoraForIndicator(tile Tile, indicator Tile) bool {
+	// Get the next tile in sequence after indicator
+	nextTile := indicator.NextDora()
+	return tile.Equals(nextTile)
+}
