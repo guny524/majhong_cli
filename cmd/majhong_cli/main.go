@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/alecthomas/kong"
+	"github.com/guny524/majhong_cli/pkg/game"
 )
 
 var version = "0.1.0"
@@ -17,11 +19,11 @@ type CLI struct {
 	Actions      string `help:"JSON array of actions to execute" short:"A"`
 	Init         bool   `help:"Initialize new game" short:"i"`
 	Query        string `help:"Query game state (current-player, valid-actions, scores, round, wall-remaining)" short:"q"`
-	Seed         int64  `help:"Seed for random number generation (for --init)" short:"s" default:"0"`
+	Seed         int64  `help:"Seed for random number generation (default: current time)" short:"s" default:"0"`
 	JSON         bool   `help:"Output in JSON format" short:"j"`
 	ExitOnTamper bool   `help:"Exit with code 4 on wall tampering" default:"false"`
 
-	// Interactive mode (future implementation)
+	// Interactive mode
 	Interactive bool `help:"Start interactive mode (TUI)" short:"I" default:"false"`
 
 	// Global flags
@@ -46,19 +48,25 @@ func main() {
 		os.Exit(ExitSuccess)
 	}
 
-	// Handle interactive mode (not yet implemented)
+	// Use current time as seed if not specified
+	if cli.Seed == 0 {
+		cli.Seed = time.Now().UnixNano()
+	}
+
+	// Handle interactive mode
 	if cli.Interactive {
-		fmt.Fprintf(os.Stderr, "Error: Interactive mode not yet implemented\n")
-		fmt.Fprintf(os.Stderr, "Use batch mode with --game-file, --action, --init, or --query\n")
-		os.Exit(ExitInvalidAction)
+		runInteractiveMode(cli.Seed)
+		return
 	}
 
 	// Validate batch mode arguments
 	if !cli.Init && cli.Query == "" && cli.Action == "" && cli.Actions == "" {
-		// No batch mode flags specified - show help
-		ctx.PrintUsage(false)
-		fmt.Fprintf(os.Stderr, "\nError: must specify --init, --query, --action, or --actions for batch mode\n")
-		os.Exit(ExitInvalidAction)
+		// No batch mode flags specified - default to interactive mode
+		fmt.Println("No batch mode flags specified. Starting interactive mode...")
+		fmt.Println("Use --help to see all available options.")
+		fmt.Println()
+		runInteractiveMode(cli.Seed)
+		return
 	}
 
 	// Create batch mode handler
@@ -76,4 +84,23 @@ func main() {
 	// Run batch mode
 	exitCode := batch.Run()
 	os.Exit(exitCode)
+}
+
+func runInteractiveMode(seed int64) {
+	fmt.Println("================================================================================")
+	fmt.Println("                    WELCOME TO RIICHI MAHJONG CLI")
+	fmt.Println("================================================================================")
+	fmt.Printf("\nStarting new game with seed: %d\n", seed)
+	fmt.Println("\nYou are playing as East (Dealer).")
+	fmt.Println("The other three players are AI-controlled.")
+	fmt.Println("\nType 'help' for available commands.")
+	fmt.Println("Press Enter to continue...")
+	fmt.Scanln()
+
+	// Create and run interactive game
+	ig := game.NewInteractiveGame(seed)
+	if err := ig.Run(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
 }
