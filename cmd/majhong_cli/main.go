@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/alecthomas/kong"
-	"github.com/guny524/majhong_cli/pkg/game"
 )
 
 var version = "0.1.0"
@@ -33,7 +32,7 @@ type CLI struct {
 func main() {
 	var cli CLI
 
-	ctx := kong.Parse(&cli,
+	kong.Parse(&cli,
 		kong.Name("majhong_cli"),
 		kong.Description("Mahjong game engine CLI for AI training and gameplay"),
 		kong.UsageOnError(),
@@ -90,17 +89,11 @@ func runInteractiveMode(seed int64) {
 	fmt.Println("================================================================================")
 	fmt.Println("                    WELCOME TO RIICHI MAHJONG CLI")
 	fmt.Println("================================================================================")
-	fmt.Printf("\nStarting new game with seed: %d\n", seed)
-	fmt.Println("\nYou are playing as East (Dealer).")
-	fmt.Println("The other three players are AI-controlled.")
-	fmt.Println("\nType 'help' for available commands.")
-	fmt.Println("Press Enter to continue...")
-	fmt.Scanln()
-
-	// Create and run interactive game
-	ig := game.NewInteractiveGame(seed)
-	if err := ig.Run(); err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		os.Exit(1)
-	}
+	fmt.Printf("\nInteractive mode will be available after merging branch 001-cli-mahjong-engine\n")
+	fmt.Printf("\nFor now, use batch mode:\n")
+	fmt.Printf("  --init --game-file game.json --seed %d\n", seed)
+	fmt.Printf("  --query current-player --game-file game.json\n")
+	fmt.Printf("  --action \"draw\" --game-file game.json\n")
+	fmt.Printf("\nSee --help for all batch mode options.\n")
+	os.Exit(0)
 }
