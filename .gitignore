@@ -21,3 +21,6 @@ vendor/
 *.swo
 *~
 .DS_Store
+
+# Mahjong save files
+.majhong_saves/
