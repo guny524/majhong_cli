@@ -1,0 +1,117 @@
+run:
+  timeout: 5m
+  skip-files:
+    - ".*\\.pb\\.go$"
+    - ".*_mock\\.go$"
+  skip-dirs:
+    - vendor
+    - node_modules
+
+linters:
+  enable:
+    # Basic correctness
+    - govet
+
+    # Advanced static analysis
+    - staticcheck
+
+    # Error handling
+    - errcheck
+
+    # Code simplifications
+    - gosimple
+
+    # Dead code detection
+    - ineffassign
+
+    # Unused code detection
+    - unused
+
+    # Code formatting
+    - gofmt
+
+    # Import organization
+    - goimports
+
+    # Spelling and typos
+    - misspell
+
+    # Opinionated code checks
+    - gocritic
+
+linters-settings:
+  govet:
+    check-shadowing: true
+    enable-all: true
+
+  staticcheck:
+    checks:
+      - all
+
+  errcheck:
+    check-blank: true
+    check-type-assertions: true
+
+  gosimple:
+    go: "1.21"
+
+  goimports:
+    local-prefixes: github.com/guny524/majhong-engine
+
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+      - opinionated
+    disabled-checks:
+      - sloppyReassign
+      - unnamedResult
+
+  misspell:
+    locale: US
+    ignore-words:
+      - "cancelled"
+
+issues:
+  exclude-rules:
+    # Exclude error checks in test files
+    - path: _test\.go$
+      linters:
+        - errcheck
+        - gocritic
+
+    # Exclude unused in test files
+    - path: _test\.go$
+      linters:
+        - unused
+        - ineffassign
+
+    # Skip all linters for auto-generated files
+    - path: \.pb\.go$
+      linters:
+        - all
+
+    # Skip all linters for mock files
+    - path: _mock\.go$
+      linters:
+        - all
+
+    # Exclude specific gocritic checks that are too strict for this project
+    - linters:
+        - gocritic
+      text: "cyclomatic complexity"
+
+    # Allow blank imports in specific cases
+    - linters:
+        - blank
+
+  # Set issue exclusion pattern
+  exclude-case-sensitive: false
+
+# Configure output
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+  uniq-by-line: false
